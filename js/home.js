@@ -25,7 +25,7 @@ function tampilkanProdukUnggulan() {
     const defaultData = [
         { id: 'p1', name: "Jeruk Keprok", category: "Buah", price: 20000, unit: "/kg", img: "images/jeruk1.jpg", desc: "Jeruk keprok segar langsung dari petani, rasa manis sedikit asam segar." },
         { id: 'p2', name: "Mangga Harum Manis", category: "Buah", price: 30000, unit: "/kg", img: "images/mangga.jpg", desc: "Mangga kualitas super, daging tebal dan biji tipis." },
-        { id: 't1', name: "Tabulampot Jambu", category: "Tabulampot", price: 150000, unit: "/pot", img: "images/jambu.png", desc: "Bibit jambu kristal dalam pot, sudah siap berbuah." },
+        { id: 't1', name: "Tabulampot Jambu", category: "Tabulampot", price: 150000, unit: "/pot", img: "images/jambu.jpg", desc: "Bibit jambu kristal dalam pot, sudah siap berbuah." },
         { id: 't3', name: "Tabulampot Nanas", category: "Tabulampot", price: 175000, unit: "/pot", img: "images/menanam-nanas-di-pot.jpg", desc: "Tanaman nanas madu dalam pot, cocok untuk hiasan teras." }
     ];
 
@@ -251,4 +251,5 @@ function initModalSystem() {
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') closeProductModal();
     });
+
 }
