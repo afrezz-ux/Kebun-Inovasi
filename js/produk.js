@@ -16,11 +16,11 @@
 
     // DATASET AWAL 
     const initialDataset = [
-        { id: 'p1', name: "Jeruk Keprok", category: "Buah", price: 20000, unit: "/kg", stock: 50, img: "images/jeruk1.jpg", desc: "Jeruk Keprok segar dengan rasa manis asam yang pas, kaya vitamin C." },
+        { id: 'p1', name: "Jeruk Siam", category: "Buah", price: 12000, unit: "/kg", stock: 50, img: "images/jeruk1.jpg", desc: "Jeruk Siam segar dengan rasa manis asam yang pas, kaya vitamin C." },
         { id: 'p2', name: "Mangga Harum Manis", category: "Buah", price: 30000, unit: "/kg", stock: 30, img: "images/mangga.jpg", desc: "Mangga kualitas super, daging tebal, biji tipis, dan serat halus." },
         { id: 'p3', name: "Nanas Madu", category: "Buah", price: 18000, unit: "/buah", stock: 40, img: "images/nanas.jpg", desc: "Nanas madu lokal anti gatal di lidah, sangat manis." },
-        { id: 'p4', name: "Jeruk Lemon", category: "Buah", price: 25000, unit: "/kg", stock: 25, img: "images/jeruk2.jpg", desc: "Lemon lokal segar dengan kandungan air melimpah." },
-        { id: 'p5', name: "semangka ", category: "Buah", price: 25000, unit: "/kg", stock: 15, img: "images/semangka.jpg", desc: "Semangka merah segar dengan rasa manis alami yang menyegarkan, kaya air dan vitamin.." },
+        { id: 'p4', name: "Jeruk Pamelo", category: "Buah", price: 25000, unit: "/kg", stock: 25, img: "images/jeruk2.jpg", desc: "Jeruk Pamelo lokal segar dengan kandungan air melimpah." },
+        { id: 'p5', name: "Semangka ", category: "Buah", price: 25000, unit: "/kg", stock: 15, img: "images/semangka.jpg", desc: "Semangka merah segar dengan rasa manis alami yang menyegarkan, kaya air dan vitamin.." },
         
         { id: 't1', name: "Tabulampot Jambu", category: "Tabulampot", price: 150000, unit: "/pot", stock: 5, img: "images/TabulampotJambuHijau.jpg", desc: "Bibit Jambu Air Citra dalam pot siap berbuah." },
         { id: 't2', name: "Tabulampot Jeruk", category: "Tabulampot", price: 250000, unit: "/pot", stock: 3, img: "images/TabulampotJambuHijau.jpg", desc: "Jeruk Dekopon jepang unik dengan tonjolan." },
@@ -172,4 +172,5 @@
     const style = document.createElement('style');
     style.innerHTML = `@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }`;
     document.head.appendChild(style);
+
 
