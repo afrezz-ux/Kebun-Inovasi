@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Berita - Kebun Inovasi Polije</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/berita.css">
+
+</head>
+
+<body>
+
+    <div class="header-wrapper">
+        <div class="top-bar">
+            <div class="container top-bar-inner">
+                <div class="top-contact">
+                    <span><i class="far fa-clock"></i> Senin - Jumat, 08:00 - 16:00</span>
+                    <span><i class="far fa-envelope"></i> kebuninovasi@gmail.com</span>
+                </div>
+                <div class="top-socials">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <nav class="navbar">
+            <div class="container navbar-inner">
+                <div class="logo">
+                    <img src="images/logopolije.jpg" alt="Logo Polije">
+                    <span class="brand">POLITEKNIK NEGERI JEMBER</span>
+                </div>
+                
+                <button class="hamburger" id="hamburger-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <div class="nav-right" id="nav-menu">
+                    <ul class="nav-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="tentang.html">Tentang Kami</a></li>
+                        <li><a href="berita.html" class="active">Berita</a></li>
+                        <li class="dropdown-menu">
+                            <a href="produk.html" class="dropbtn">Produk <i class="fas fa-caret-down"></i></a>
+                            <div class="dropdown-content">
+                                <a href="produk.html?kategori=all">Semua Produk</a>
+                                <a href="produk.html?kategori=Buah">Buah Segar</a>
+                                <a href="produk.html?kategori=Tabulampot">Tabulampot</a>
+                            </div>
+                        </li>
+                        <li><a href="Galeri.html">Galeri</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="page-header">
+        <div class="container">
+            <h1 class="page-title">BERITA & ARTIKEL</h1>
+
+        </div>
+    </div>
+
+    <section class="news-section">
+        <div class="container">
+            <div class="news-grid" id="newsGrid"></div>
+
+            <div class="pagination" id="pagination">
+                <div class="page-link" onclick="changePage('prev')"><i class="fas fa-chevron-left"></i></div>
+                <div class="page-link active" onclick="changePage(1)" id="btn1">1</div>
+                <div class="page-link" onclick="changePage(2)" id="btn2">2</div>
+                <div class="page-link" onclick="changePage(3)" id="btn3">3</div>
+                <div class="page-link" onclick="changePage('next')"><i class="fas fa-chevron-right"></i></div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-orbs">
+            <div class="orb orb-1"></div>
+            <div class="orb orb-2"></div>
+            <div class="orb orb-3"></div>
+        </div>
+
+        <div class="container">
+            <div class="footer-content">
+                <div class="f-col">
+                    <div class="f-logo-flex">
+                        <div class="f-logo-circle"><img src="images/kebun inovasi.jpg" alt="Logo"></div>
+                        <div class="f-brand-name">KEBUN INOVASI<br>POLIJE</div>
+                    </div>
+                    <p class="f-desc">Pusat unggulan inovasi agroteknologi yang berkomitmen pada pengembangan pertanian berkelanjutan.</p>
+                    <div class="f-socials">
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <div class="f-col f-links">
+                    <h4 class="f-heading">Tautan Cepat</h4>
+                    <ul>
+                        <li><a href="tentang.html">Tentang Kami</a></li>
+                        <li><a href="produk.html">Produk Segar</a></li>
+                        <li><a href="berita.html">Kabar Berita</a></li>
+                        <li><a href="Galeri.html">Galeri Foto</a></li>
+                    </ul>
+                </div>
+
+                <div class="f-col f-contact">
+                    <h4 class="f-heading">Hubungi Kami</h4>
+          <ul>
+            <li><a href="https://wa.me/628124944360" target="_blank" class="contact-row"><i class="fab fa-whatsapp"></i><div class="contact-text"><h5>WhatsApp</h5><span>+62 812-3456-7890</span></div></a></li>
+            <li><a href="mailto:kebuninovasi@gmail.com" class="contact-row"><i class="far fa-envelope"></i><div class="contact-text"><h5>Email</h5><span>kebuninovasi@gmail.com</span></div></a></li>
+            <li><a href="#" class="contact-row"><i class="fas fa-map-marker-alt"></i><div class="contact-text"><h5>Lokasi</h5><span>UPT Agrotech Garden, Jember</span></div></a></li>
+          </ul>
+                </div>
+
+                <div class="f-col f-newsletter">
+                    <h4 class="f-heading">Newsletter</h4>
+                    <p>Dapatkan info panen terbaru ke email Anda.</p>
+                    <form class="newsletter-form" action="#">
+                        <input type="email" placeholder="Masukkan Email...">
+                        <button type="submit" class="newsletter-btn"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                &copy; 2025 Kebun Inovasi Polije. All Rights Reserved. Design in Jember.
+            </div>
+        </div>
+    </footer>
+
+<script src="js/berita.js"></script>
+
+</body>
+</html>
