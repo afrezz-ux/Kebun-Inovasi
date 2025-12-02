@@ -22,9 +22,9 @@
         { id: 'p4', name: "Jeruk Lemon", category: "Buah", price: 25000, unit: "/kg", stock: 25, img: "images/jeruk2.jpg", desc: "Lemon lokal segar dengan kandungan air melimpah." },
         { id: 'p5', name: "semangka ", category: "Buah", price: 25000, unit: "/kg", stock: 15, img: "images/semangka.jpg", desc: "Semangka merah segar dengan rasa manis alami yang menyegarkan, kaya air dan vitamin.." },
         
-        { id: 't1', name: "Tabulampot Jambu", category: "Tabulampot", price: 150000, unit: "/pot", stock: 5, img: "images/jambu.png", desc: "Bibit Jambu Air Citra dalam pot siap berbuah." },
-        { id: 't2', name: "Tabulampot Jeruk", category: "Tabulampot", price: 250000, unit: "/pot", stock: 3, img: "https://placehold.co/300x300/orange/fff?text=Dekopon", desc: "Jeruk Dekopon jepang unik dengan tonjolan." },
-        { id: 't3', name: "Tabulampot nanas", category: "Tabulampot", price: 175000, unit: "/pot", stock: 4, img: "https://placehold.co/300x300/brown/fff?text=Kelengkeng", desc: "Kelengkeng Itoh super genjah, daging tebal." }
+        { id: 't1', name: "Tabulampot Jambu", category: "Tabulampot", price: 150000, unit: "/pot", stock: 5, img: "images/TabulampotJambuHijau.jpg", desc: "Bibit Jambu Air Citra dalam pot siap berbuah." },
+        { id: 't2', name: "Tabulampot Jeruk", category: "Tabulampot", price: 250000, unit: "/pot", stock: 3, img: "images/TabulampotJambuHijau.jpg", desc: "Jeruk Dekopon jepang unik dengan tonjolan." },
+        { id: 't3', name: "Tabulampot nanas", category: "Tabulampot", price: 175000, unit: "/pot", stock: 4, img: "images/TabulampotJambuHijau.jpg", desc: "Kelengkeng Itoh super genjah, daging tebal." }
     ];
 
     // --- CORE FUNCTIONS ---
@@ -172,3 +172,4 @@
     const style = document.createElement('style');
     style.innerHTML = `@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }`;
     document.head.appendChild(style);
+
