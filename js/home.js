@@ -48,7 +48,7 @@ function tampilkanProdukUnggulan() {
             category: "Tabulampot", 
             price: 150000, 
             unit: "/pot", 
-            img: "images/jambu.png",
+            img: "images/TabulampotJambuHijau.jpg",
             desc: "Tabulampot Jambu Kristal unggulan, cepat berbuah, perawatan mudah, dan cocok untuk halaman rumah."
         },
 
@@ -163,3 +163,4 @@ function initModalSystem() {
     `;
     document.body.insertAdjacentHTML('beforeend', modalHTML);
 }
+
