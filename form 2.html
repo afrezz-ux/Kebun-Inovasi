@@ -332,49 +332,48 @@
         </div>
     </div>
 
-    <script>
+<script>
         // --- CONFIG ---
         const ONGKIR_JEMBER = 10000;
         const ONGKIR_LUAR = 30000;
+        // Ganti dengan nomor WA Admin yang benar, format internasional (tanpa +)
+        const ADMIN_WA_NUMBER = '6281515524727'; 
         
-  const initialDataset = [
-
-    // --- BUAH ---
-    { id: 'p1', name: "Jeruk Keprok", category: "Buah", price: 20000, unit: "/kg", stock: 50, img: "images/jeruk1.jpg", desc: "Jeruk Keprok segar dengan rasa manis asam yang pas, kaya vitamin C." },
-
+        // Database Produk (Fallback jika localStorage kosong/tidak ada)
+        const fallbackDB = [
+    { id: 'p1', name: "Jeruk Siam", category: "Buah", price: 12000, unit: "/kg", stock: 50, img: "images/jeruk1.jpg", desc: "Jeruk Siam segar dengan rasa manis asam yang pas, kaya vitamin C." },
     { id: 'p2', name: "Mangga Harum Manis", category: "Buah", price: 30000, unit: "/kg", stock: 30, img: "images/mangga.jpg", desc: "Mangga kualitas super, daging tebal, biji tipis, dan serat halus." },
-
-    { id: 'p4', name: "Nanas Madu", category: "Buah", price: 18000, unit: "/buah", stock: 40, img: "images/nanas.jpg", desc: "Nanas madu lokal anti gatal di lidah, sangat manis." },
-
-    { id: 'p5', name: "Jeruk Lemon", category: "Buah", price: 25000, unit: "/kg", stock: 25, img: "images/jeruk2.jpg", desc: "Lemon lokal segar dengan kandungan air melimpah." },
-
-    { id: 'p12', name: "Melon Golden", category: "Buah", price: 25000, unit: "/kg", stock: 15, img: "https://placehold.co/300x300/yellow/333?text=Melon", desc: "Melon kulit kuning dengan daging putih renyah." },
-
-
-    // --- TABULAMPOT ---
-    { id: 'p9', name: "Tabulampot Jambu", category: "Tabulampot", price: 150000, unit: "/pot", stock: 5, img: "https://placehold.co/300x300/green/fff?text=Jambu", desc: "Bibit Jambu Air Citra dalam pot siap berbuah." },
-
-    { id: 'p10', name: "Tabulampot Jeruk", category: "Tabulampot", price: 250000, unit: "/pot", stock: 3, img: "https://placehold.co/300x300/orange/fff?text=Dekopon", desc: "Jeruk Dekopon jepang unik dengan tonjolan." },
-
-    { id: 'p11', name: "Tabulampot Kelengkeng", category: "Tabulampot", price: 175000, unit: "/pot", stock: 4, img: "https://placehold.co/300x300/brown/fff?text=Kelengkeng", desc: "Kelengkeng Itoh super genjah, daging tebal." }
-
+    { id: 'p3', name: "Nanas Madu", category: "Buah", price: 18000, unit: "/buah", stock: 40, img: "images/nanas.jpg", desc: "Nanas madu lokal anti gatal di lidah, sangat manis." },
+    { id: 'p4', name: "Jeruk Pamelo", category: "Buah", price: 15000, unit: "/kg", stock: 25, img: "images/jerukpamelo.jpg", desc: "Jeruk Pamelo lokal segar dengan kandungan air melimpah." },
+    { id: 'p5', name: "Semangka", category: "Buah", price: 25000, unit: "/kg", stock: 15, img: "images/semangka.png", desc: "Semangka merah segar dengan rasa manis alami yang menyegarkan." },
+    
+    { id: 't1', name: "Tabulampot Jambu", category: "Tabulampot", price: 250000, unit: "/pot", stock: 5, img: "images/tabulampotjeruk.jpg", desc: "Bibit Jambu Air Citra dalam pot siap berbuah." },
+    { id: 't2', name: "Tabulampot Jeruk", category: "Tabulampot", price: 275000, unit: "/pot", stock: 3, img: "images/tabulampotmangga.jpg", desc: "Jeruk Dekopon Jepang unik dengan tonjolan." },
+    { id: 't3', name: "Tabulampot Nanas", category: "Tabulampot", price: 300000, unit: "/pot", stock: 4, img: "images/tabulampotnanas.png", desc: "Kelengkeng Itoh super genjah, daging tebal." }
 ];
 
-        // --- STATE ---
+
+ // --- STATE ---
         let product = null;
         let qty = 1;
         let shippingCost = 0;
 
         // --- UTILS ---
         const fmtMoney = (n) => `Rp ${new Intl.NumberFormat('id-ID').format(n)}`;
+        
+        // FUNGSI untuk Format Harga WA (menghilangkan 'Rp' agar perataan lebih mudah)
+        const formatPriceWA = (price) => {
+            const formatted = new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(price);
+            return formatted; // Contoh: "30.000"
+        };
 
-        // --- INIT ---
+
+        // --- INIT & RENDER ---
         document.addEventListener('DOMContentLoaded', () => {
             const params = new URLSearchParams(window.location.search);
             const pId = params.get('id');
             qty = parseInt(params.get('qty')) || 1;
 
-            // Cari produk di localStorage atau Fallback
             const stored = JSON.parse(localStorage.getItem('products'));
             const db = (stored && stored.length) ? stored : fallbackDB;
             
@@ -382,7 +381,7 @@
 
             if (!product) {
                 alert('Produk tidak ditemukan!');
-                window.location.href = 'produk.html';
+                window.location.href = 'produk.html'; 
                 return;
             }
 
@@ -392,8 +391,8 @@
         function renderUI() {
             document.getElementById('p_img').src = product.img;
             document.getElementById('p_name').innerText = product.name;
-            document.getElementById('p_qty_display').innerText = `Jumlah: ${qty}`;
-            document.getElementById('p_price').innerText = fmtMoney(product.price);
+            document.getElementById('p_qty_display').innerText = `Jumlah: ${qty} ${product.unit.replace('/', '')}`;
+            document.getElementById('p_price').innerText = fmtMoney(product.price) + product.unit;
             
             calculate();
         }
@@ -403,7 +402,7 @@
             const total = subtotal + shippingCost;
 
             document.getElementById('p_subtotal').innerText = fmtMoney(subtotal);
-            document.getElementById('p_shipping').innerText = shippingCost === 0 ? '-' : fmtMoney(shippingCost);
+            document.getElementById('p_shipping').innerText = shippingCost === 0 ? 'Dihitung' : fmtMoney(shippingCost);
             document.getElementById('p_total').innerText = fmtMoney(total);
         }
 
@@ -424,6 +423,7 @@
             } else {
                 shippingCost = 0;
                 kabGroup.style.display = 'none';
+                document.getElementById('kabupaten').required = false;
             }
             calculate();
         });
@@ -446,30 +446,79 @@
             const payment = document.querySelector('input[name="payment"]:checked').value;
             
             const orderId = '#INV-' + Math.floor(10000 + Math.random() * 90000);
-            const totalVal = (product.price * qty) + shippingCost;
+            const subtotalVal = product.price * qty;
+            const totalVal = subtotalVal + shippingCost;
             const lokasi = area === 'LUAR_JEMBER' ? kab : 'Jember';
+            const fullAlamat = area === 'LUAR_JEMBER' ? `${alamat}, ${kab}` : `${alamat}, Jember`;
 
-            // Isi Struk
+            // =========================================================
+            // ISI STRUK HTML DI MODAL (r_body)
+            // =========================================================
             document.getElementById('r_id').innerText = orderId;
-            document.getElementById('r_date').innerText = new Date().toLocaleDateString('id-ID');
-            document.getElementById('r_nama').innerText = nama;
-            document.getElementById('r_area').innerText = lokasi;
-            document.getElementById('r_prod_name').innerText = `${product.name} x${qty}`;
-            document.getElementById('r_prod_price').innerText = fmtMoney(product.price * qty);
-            document.getElementById('r_shipping').innerText = fmtMoney(shippingCost);
-            document.getElementById('r_grand_total').innerText = fmtMoney(totalVal);
-            document.getElementById('r_method').innerText = payment;
-
-            // Link WA
-            let waText = `Halo Admin, Konfirmasi Pesanan Baru:%0A`;
-            waText += `*${orderId}*%0A`;
-            waText += `Nama: ${nama}%0A`;
-            waText += `Item: ${product.name} (x${qty})%0A`;
-            waText += `Total: ${fmtMoney(totalVal)}%0A`;
-            waText += `Alamat: ${alamat}, ${lokasi}%0A`;
-            waText += `Pembayaran: ${payment}`;
+            document.getElementById('r_date').innerText = new Date().toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
             
-            document.getElementById('waBtn').href = `https://wa.me/628124944360?text=${waText}`;
+            const rBody = document.querySelector('.r-body');
+            rBody.innerHTML = `
+                <div class="r-row"><span>Penerima:</span> <span>${nama}</span></div>
+                <div class="r-row"><span>WhatsApp:</span> <span>${wa}</span></div>
+                <div style="margin-top: 5px;"><span>Alamat:</span></div>
+                <div style="font-size: 0.9rem; margin-bottom: 15px; padding-left: 10px; color: #555;">${fullAlamat}</div>
+                
+                <div style="margin: 10px 0; border-bottom: 1px dashed #ccc;"></div>
+                
+                <div class="r-row">
+                    <span id="r_prod_name">${product.name} x${qty} ${product.unit.replace('/', '')}</span>
+                    <span id="r_prod_price">${fmtMoney(subtotalVal)}</span>
+                </div>
+                <div class="r-row">
+                    <span>Ongkir (${lokasi})</span>
+                    <span id="r_shipping">${fmtMoney(shippingCost)}</span>
+                </div>
+                
+                <div class="r-row r-total">
+                    <span>TOTAL</span>
+                    <span id="r_grand_total">${fmtMoney(totalVal)}</span>
+                </div>
+                <div class="r-row" style="margin-top: 5px; font-size: 0.85rem; color: #666;">
+                    <span>Metode:</span> <span>${payment}</span>
+                </div>
+            `;
+            // =========================================================
+
+
+// --- TEMPLATE PESAN WA PALING RAPI DAN STABIL ---
+
+let waText = `
+*KONFIRMASI PESANAN BARU*
+Dari: ${nama}
+================================================
+
+*1. RINCIAN PESANAN*
+ID Order: *${orderId}*
+Item: ${product.name} (x${qty} ${product.unit.replace('/', '')})
+Subtotal: ${fmtMoney(subtotalVal)}
+Ongkir (${lokasi}): ${fmtMoney(shippingCost)}
+------------------------------------------------
+*TOTAL BAYAR: ${fmtMoney(totalVal)}*
+Metode: ${payment}
+================================================
+
+*2. DATA PENGIRIMAN*
+Penerima: ${nama}
+No. WA: ${wa}
+Alamat Lengkap: ${fullAlamat}
+
+_Mohon segera diproses. Terima kasih!_
+`;
+
+// Encode teks dengan aman
+const encodedWaText = encodeURIComponent(waText.trim());
+
+// Set link WA
+document.getElementById('waBtn').href =
+  `https://wa.me/${ADMIN_WA_NUMBER}?text=${encodedWaText}`;
+
+// (Lanjutkan menampilkan modal...)
 
             // Tampilkan Modal
             const modal = document.getElementById('receiptModal');
