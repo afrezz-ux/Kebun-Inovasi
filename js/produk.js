@@ -22,10 +22,38 @@ const initialDataset = [
     { id: 'p4', name: "Jeruk Pamelo", category: "Buah", price: 15000, unit: "/kg", stock: 25, img: "images/jerukpamelo.jpg", desc: "Jeruk Pamelo lokal segar dengan kandungan air melimpah." },
     { id: 'p5', name: "Semangka", category: "Buah", price: 25000, unit: "/kg", stock: 15, img: "images/semangka.png", desc: "Semangka merah segar dengan rasa manis alami yang menyegarkan." },
     
-    { id: 't1', name: "Tabulampot Jambu", category: "Tabulampot", price: 250000, unit: "/pot", stock: 5, img: "images/tabulampotjeruk.jpg", desc: "Bibit Jambu Air Citra dalam pot siap berbuah." },
-    { id: 't2', name: "Tabulampot Jeruk", category: "Tabulampot", price: 275000, unit: "/pot", stock: 3, img: "images/tabulampotmangga.jpg", desc: "Jeruk Dekopon Jepang unik dengan tonjolan." },
-    { id: 't3', name: "Tabulampot Nanas", category: "Tabulampot", price: 300000, unit: "/pot", stock: 4, img: "images/tabulampotnanas.png", desc: "Kelengkeng Itoh super genjah, daging tebal." }
-];
+{ 
+    id: 't1', 
+    name: "Tabulampot Jambu", 
+    category: "Tabulampot", 
+    price: 250000, 
+    unit: "/pot", 
+    stock: 5, 
+    img: "images/tabulampotjeruk.jpg", 
+    desc: "Tabulampot Jambu Air Citra unggulan, cepat berbuah, perawatan mudah, dan cocok untuk halaman rumah." 
+},
+
+{ 
+    id: 't2', 
+    name: "Tabulampot Jeruk", 
+    category: "Tabulampot", 
+    price: 275000, 
+    unit: "/pot", 
+    stock: 3, 
+    img: "images/tabulampotmangga.jpg", 
+    desc: "Tabulampot Jeruk Dekopon berkualitas, aroma segar, buah besar, dan pertumbuhan stabil dalam pot." 
+},
+
+{ 
+    id: 't3', 
+    name: "Tabulampot Nanas", 
+    category: "Tabulampot", 
+    price: 300000, 
+    unit: "/pot", 
+    stock: 4, 
+    img: "images/tabulampotnanas.png", 
+    desc: "Tabulampot Nanas Madu dengan rasa manis alami, tanaman kuat, dan siap mempercantik taman rumah." 
+}
 
 // --- CORE FUNCTIONS ---
 
@@ -131,3 +159,4 @@ style.innerHTML = `
     to { opacity: 1; transform: translateY(0); } 
 }`;
 document.head.appendChild(style);
+
