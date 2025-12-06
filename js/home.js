@@ -62,10 +62,8 @@ function tampilkanProdukUnggulan() {
         }
     ];
 
-    let products = [];
-    const storedData = localStorage.getItem('products');
-
-    products = storedData ? JSON.parse(storedData) : defaultData;
+    // >>> Tidak pakai localStorage lagi ←←←
+    const products = defaultData;
 
     // Ambil 4 produk pertama & simpan ke variabel global
     currentFeaturedProducts = products.slice(0, 4);
