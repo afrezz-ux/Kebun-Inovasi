@@ -44,7 +44,7 @@ function tampilkanProdukUnggulan() {
 
         { 
             id: 't1', 
-            name: "Tabulampot Jambu", 
+            name: "Tabulampot Jeruk", 
             category: "Tabulampot", 
             price: 150000, 
             unit: "/pot", 
@@ -163,5 +163,6 @@ function initModalSystem() {
     `;
     document.body.insertAdjacentHTML('beforeend', modalHTML);
 }
+
 
 
