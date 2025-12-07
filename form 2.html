@@ -1,139 +1,531 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Kebun Inovasi Polije</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- 1. SETUP & VARIABEL --- */
+        :root {
+            --primary: #103727;
+            --accent: #C25D3C;
+            --bg-body: #f4f7f6;
+            --white: #ffffff;
+            --text-dark: #2d3436;
+            --text-light: #636e72;
+            --border: #dfe6e9;
+            --shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        /* --- 2. LAYOUT UTAMA --- */
+        .main-wrapper {
+            width: 100%; max-width: 1100px;
+            background: transparent;
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .brand-header {
+            text-align: center; margin-bottom: 30px;
+        }
+        .brand-logo {
+            width: 60px; height: 60px; border-radius: 50%; margin-bottom: 10px;
+            box-shadow: 0 5px 15px rgba(16, 55, 39, 0.2);
+        }
+        .brand-title {
+            font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--primary); letter-spacing: 1px;
+        }
+        
+        .checkout-container {
+            display: grid; grid-template-columns: 1.4fr 1fr; gap: 30px;
+        }
+
+        /* --- 3. KARTU FORMULIR (KIRI) --- */
+        .card {
+            background: var(--white); border-radius: 20px; padding: 35px;
+            box-shadow: var(--shadow); border: 1px solid white;
+        }
+
+        .section-head {
+            display: flex; align-items: center; gap: 15px; margin-bottom: 25px; padding-bottom: 15px;
+            border-bottom: 1px dashed var(--border);
+        }
+        .step-num {
+            background: var(--primary); color: white; width: 30px; height: 30px;
+            border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: 600; font-size: 0.9rem;
+        }
+        .step-title { font-weight: 600; font-size: 1.1rem; color: var(--primary); }
+
+        .form-grid { display: grid; gap: 20px; }
+        .input-group { display: flex; flex-direction: column; gap: 8px; }
+        .label { font-size: 0.85rem; font-weight: 500; color: var(--text-dark); }
+        
+        .input-field, .select-field, .textarea-field {
+            width: 100%; padding: 12px 15px; border: 1px solid var(--border); border-radius: 10px;
+            font-family: 'Poppins', sans-serif; transition: 0.3s; background: #fdfdfd; font-size: 0.95rem;
+        }
+        .input-field:focus, .select-field:focus, .textarea-field:focus {
+            border-color: var(--accent); background: #fff; box-shadow: 0 0 0 4px rgba(194, 93, 60, 0.1); outline: none;
+        }
+
+        /* Custom Radio Box */
+        .payment-options { display: grid; gap: 15px; }
+        .radio-label {
+            display: flex; align-items: center; padding: 15px; border: 1px solid var(--border);
+            border-radius: 12px; cursor: pointer; transition: 0.3s;
+        }
+        .radio-label:hover { background: #fafafa; }
+        .radio-input { margin-right: 15px; accent-color: var(--accent); transform: scale(1.2); }
+        .radio-text { font-weight: 500; }
+        .radio-input:checked + .radio-text { color: var(--accent); }
+        .radio-label:has(:checked) { border-color: var(--accent); background: rgba(194, 93, 60, 0.05); }
+
+        /* --- 4. RINGKASAN PESANAN (KANAN) --- */
+        .summary-card {
+            background: var(--primary); color: white; position: sticky; top: 20px; height: fit-content;
+            background-image: url('https://www.transparenttextures.com/patterns/cubes.png');
+        }
+        
+        .product-preview {
+            display: flex; gap: 15px; align-items: center; background: rgba(255,255,255,0.1);
+            padding: 15px; border-radius: 15px; margin-bottom: 25px;
+        }
+        .pp-img { width: 60px; height: 60px; border-radius: 10px; object-fit: cover; background: white; }
+        .pp-details h4 { font-size: 1rem; margin-bottom: 4px; }
+        .pp-details p { font-size: 0.85rem; opacity: 0.8; }
+
+        .calc-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.9rem; opacity: 0.9; }
+        .divider { border-top: 1px dashed rgba(255,255,255,0.3); margin: 20px 0; }
+        
+        .total-row { display: flex; justify-content: space-between; align-items: center; font-size: 1.3rem; font-weight: 700; margin-bottom: 30px; }
+        .total-val { color: #ffbf00; }
+
+        .btn-checkout {
+            width: 100%; background: var(--accent); color: white; border: none;
+            padding: 16px; border-radius: 50px; font-weight: 600; font-size: 1rem;
+            cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .btn-checkout:hover { background: #a84d31; transform: translateY(-3px); }
+        .btn-back {
+            display: block; text-align: center; color: rgba(255,255,255,0.6); text-decoration: none;
+            margin-top: 15px; font-size: 0.85rem; transition: 0.3s;
+        }
+        .btn-back:hover { color: white; }
+
+        /* --- 5. STRUK MODAL (ANIMASI) --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+            display: none; justify-content: center; align-items: center; z-index: 2000;
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .modal-overlay.active { opacity: 1; }
+
+        .receipt-paper {
+            background: white; width: 100%; max-width: 400px; padding: 30px;
+            border-radius: 5px; position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            transform: translateY(50px); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .receipt-paper::before { /* Efek gerigi kertas atas */
+            content: ""; position: absolute; top: -10px; left: 0; width: 100%; height: 10px;
+            background: radial-gradient(circle, transparent, transparent 50%, white 50%, white);
+            background-size: 15px 15px;
+        }
+        .receipt-paper::after { /* Efek gerigi kertas bawah */
+            content: ""; position: absolute; bottom: -10px; left: 0; width: 100%; height: 10px;
+            background: radial-gradient(circle, transparent, transparent 50%, white 50%, white);
+            background-size: 15px 15px; transform: rotate(180deg);
+        }
+        .modal-overlay.active .receipt-paper { transform: translateY(0); }
+
+        .r-header { text-align: center; border-bottom: 2px dashed #333; padding-bottom: 20px; margin-bottom: 20px; }
+        .r-logo { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.2rem; color: var(--primary); }
+        .r-id { font-family: monospace; color: #666; margin-top: 5px; }
+        
+        .r-body { font-family: monospace; font-size: 0.95rem; line-height: 1.6; color: #333; }
+        .r-row { display: flex; justify-content: space-between; }
+        .r-total { font-weight: 700; font-size: 1.1rem; margin-top: 15px; border-top: 2px dashed #333; padding-top: 10px; }
+        
+        .r-footer { margin-top: 25px; text-align: center; }
+        .btn-wa-confirm {
+            display: block; width: 100%; padding: 12px; background: #25D366; color: white;
+            text-decoration: none; border-radius: 8px; font-weight: 600; margin-bottom: 10px;
+            transition: 0.3s;
+        }
+        .btn-wa-confirm:hover { background: #1da851; }
+        .r-note { font-size: 0.75rem; color: #888; }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .checkout-container { grid-template-columns: 1fr; }
+            .summary-card { order: -1; position: relative; top: 0; }
+            body { padding: 20px 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-wrapper">
+        
+        <div class="brand-header">
+            <img src="images/logopolije.jpg" alt="Logo" class="brand-logo">
+            <div class="brand-title">Kebun Inovasi Polije</div>
+        </div>
+
+        <form id="checkoutForm" class="checkout-container">
+            
+            <div class="form-section">
+                <div class="card">
+                    <div class="section-head">
+                        <div class="step-num">1</div>
+                        <div class="step-title">Informasi Pengiriman</div>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label class="label">Nama Penerima</label>
+                            <input type="text" id="nama" class="input-field" placeholder="Contoh: Budi Santoso" required>
+                        </div>
+                        <div class="input-group">
+                            <label class="label">Nomor WhatsApp (Aktif)</label>
+                            <input id="whatsapp" class="input-field" placeholder="0812xxxx" required>
+                        </div>
+                        <div class="input-group">
+                            <label class="label">Area Pengiriman</label>
+                            <select id="area" class="select-field" required>
+                                <option value="">-- Pilih Area --</option>
+                                <option value="JEMBER">Jember (Kota/Kabupaten) - Rp 10.000</option>
+                                <option value="LUAR_JEMBER">Luar Jember (Ekspedisi) - Rp 30.000</option>
+                            </select>
+                        </div>
+                        <div class="input-group" id="kabupaten-group" style="display: none;">
+                            <label class="label">Kota / Kabupaten Tujuan</label>
+                            <input type="text" id="kabupaten" class="input-field" placeholder="Masukkan nama kota...">
+                        </div>
+                        <div class="input-group">
+                            <label class="label">Alamat Lengkap</label>
+                            <textarea id="alamat" class="textarea-field" rows="3" placeholder="Nama Jalan, RT/RW, Kelurahan..." required></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top: 20px;">
+                    <div class="section-head">
+                        <div class="step-num">2</div>
+                        <div class="step-title">Metode Pembayaran</div>
+                    </div>
+                    <div class="payment-options">
+                        <label class="radio-label">
+                            <input type="radio" name="payment" value="COD" class="radio-input" checked>
+                            <span class="radio-text"><i class="fas fa-hand-holding-usd"></i> Bayar di Tempat (COD)</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="payment" value="Transfer" class="radio-input">
+                            <span class="radio-text"><i class="fas fa-university"></i> Transfer Bank (BCA/Mandiri)</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-section">
+                <div class="card summary-card">
+                    <div class="section-head" style="border-color: rgba(255,255,255,0.2); color: white;">
+                        <div class="step-title" style="color: white;">Ringkasan</div>
+                    </div>
+
+                    <div class="product-preview">
+                        <img id="p_img" src="" class="pp-img" onerror="this.src='https://placehold.co/60?text=Img'">
+                        <div class="pp-details">
+                            <h4 id="p_name">Memuat Produk...</h4>
+                            <p id="p_qty_display">Jumlah: 1</p>
+                        </div>
+                    </div>
+
+                    <div class="calc-row">
+                        <span>Harga Satuan</span>
+                        <span id="p_price">Rp 0</span>
+                    </div>
+                    <div class="calc-row">
+                        <span>Subtotal Produk</span>
+                        <span id="p_subtotal">Rp 0</span>
+                    </div>
+                    <div class="calc-row">
+                        <span>Ongkos Kirim</span>
+                        <span id="p_shipping">Rp 0</span>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div class="total-row">
+                        <span>Total Bayar</span>
+                        <span class="total-val" id="p_total">Rp 0</span>
+                    </div>
+
+                    <button type="submit" class="btn-checkout">
+                        <i class="fas fa-lock"></i> Konfirmasi Pesanan
+                    </button>
+                    <a href="javascript:history.back()" class="btn-back">Kembali ke Produk</a>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="modal-overlay" id="receiptModal">
+        <div class="receipt-paper">
+            <div class="r-header">
+                <div class="r-logo">KEBUN INOVASI POLIJE</div>
+                <div class="r-id" id="r_id">#INV-000000</div>
+                <div style="font-size: 0.8rem; color: #888; margin-top:5px;" id="r_date"></div>
+            </div>
+            
+            <div class="r-body">
+                <div class="r-row"><span>Nama:</span> <span id="r_nama"></span></div>
+                <div class="r-row"><span>Area:</span> <span id="r_area"></span></div>
+                <div style="margin: 10px 0; border-bottom: 1px dashed #ccc;"></div>
+                
+                <div class="r-row">
+                    <span id="r_prod_name">Produk x1</span>
+                    <span id="r_prod_price">Rp 0</span>
+                </div>
+                <div class="r-row">
+                    <span>Ongkir</span>
+                    <span id="r_shipping">Rp 0</span>
+                </div>
+                
+                <div class="r-row r-total">
+                    <span>TOTAL</span>
+                    <span id="r_grand_total">Rp 0</span>
+                </div>
+                <div class="r-row" style="margin-top: 5px; font-size: 0.85rem; color: #666;">
+                    <span>Metode:</span> <span id="r_method">COD</span>
+                </div>
+            </div>
+
+            <div class="r-footer">
+                <a href="#" id="waBtn" target="_blank" class="btn-wa-confirm">
+                    <i class="fab fa-whatsapp"></i> Kirim Struk ke Admin
+                </a>
+                <p class="r-note">Simpan tangkapan layar struk ini sebagai bukti pemesanan.</p>
+                <a href="produk.html" style="display:block; margin-top:15px; font-size:0.8rem; color:#103727;">Selesai & Kembali</a>
+            </div>
+        </div>
+    </div>
+
 <script>
-    // --- CONFIG ---
-    const ONGKIR_JEMBER = 10000;
-    const ONGKIR_LUAR = 30000;
-    const ADMIN_WA_NUMBER = '6281515524727';
+        // --- CONFIG ---
+        const ONGKIR_JEMBER = 10000;
+        const ONGKIR_LUAR = 30000;
+        // Ganti dengan nomor WA Admin yang benar, format internasional (tanpa +)
+        const ADMIN_WA_NUMBER = '6281515524727'; 
+        
+        // Database Produk (Fallback jika localStorage kosong/tidak ada)
+        const fallbackDB = [
+    { id: 'p1', name: "Jeruk Siam", category: "Buah", price: 12000, unit: "/kg", stock: 50, img: "images/jeruk1.jpg", desc: "Jeruk Siam segar dengan rasa manis asam yang pas, kaya vitamin C." },
+    { id: 'p2', name: "Mangga Harum Manis", category: "Buah", price: 30000, unit: "/kg", stock: 30, img: "images/mangga.jpg", desc: "Mangga kualitas super, daging tebal, biji tipis, dan serat halus." },
+    { id: 'p3', name: "Nanas Madu", category: "Buah", price: 18000, unit: "/buah", stock: 40, img: "images/nanas.jpg", desc: "Nanas madu lokal anti gatal di lidah, sangat manis." },
+    { id: 'p4', name: "Jeruk Pamelo", category: "Buah", price: 15000, unit: "/kg", stock: 25, img: "images/jerukpamelo.jpg", desc: "Jeruk Pamelo lokal segar dengan kandungan air melimpah." },
+    { id: 'p5', name: "Semangka", category: "Buah", price: 25000, unit: "/kg", stock: 15, img: "images/semangka.png", desc: "Semangka merah segar dengan rasa manis alami yang menyegarkan." },
+    
+    { id: 't1', name: "Tabulampot Jambu", category: "Tabulampot", price: 250000, unit: "/pot", stock: 5, img: "images/tabulampotjeruk.jpg", desc: "Bibit Jambu Air Citra dalam pot siap berbuah." },
+    { id: 't2', name: "Tabulampot Jeruk", category: "Tabulampot", price: 275000, unit: "/pot", stock: 3, img: "images/tabulampotmangga.jpg", desc: "Jeruk Dekopon Jepang unik dengan tonjolan." },
+    { id: 't3', name: "Tabulampot Nanas", category: "Tabulampot", price: 300000, unit: "/pot", stock: 4, img: "images/tabulampotnanas.png", desc: "Kelengkeng Itoh super genjah, daging tebal." }
+];
 
-    // DATABASE PRODUK (TIDAK ADA LOCALSTORAGE)
-    const fallbackDB = [
-        { id: 'p1', name: "Jeruk Siam", category: "Buah", price: 12000, unit: "/kg", stock: 50, img: "images/jeruk1.jpg", desc: "Jeruk Siam segar." },
-        { id: 'p2', name: "Mangga Harum Manis", category: "Buah", price: 30000, unit: "/kg", stock: 30, img: "images/mangga.jpg", desc: "Mangga premium." },
-        { id: 'p3', name: "Nanas Madu", category: "Buah", price: 18000, unit: "/buah", stock: 40, img: "images/nanas.jpg", desc: "Nanas super manis." },
-        { id: 'p4', name: "Jeruk Pamelo", category: "Buah", price: 15000, unit: "/kg", stock: 25, img: "images/jerukpamelo.jpg", desc: "Jeruk segar." },
-        { id: 'p5', name: "Semangka", category: "Buah", price: 25000, unit: "/kg", stock: 15, img: "images/semangka.png", desc: "Semangka manis." },
 
-        { id: 't1', name: "Tabulampot Jambu", category: "Tabulampot", price: 250000, unit: "/pot", stock: 5, img: "images/tabulampotjeruk.jpg", desc: "Bibit siap berbuah." },
-        { id: 't2', name: "Tabulampot Jeruk", category: "Tabulampot", price: 275000, unit: "/pot", stock: 3, img: "images/tabulampotmangga.jpg", desc: "Jeruk Jepang premium." },
-        { id: 't3', name: "Tabulampot Nanas", category: "Tabulampot", price: 300000, unit: "/pot", stock: 4, img: "images/tabulampotnanas.png", desc: "Nanas siap panen." }
-    ];
+ // --- STATE ---
+        let product = null;
+        let qty = 1;
+        let shippingCost = 0;
 
-    let product = null;
-    let qty = 1;
-    let shippingCost = 0;
+        // --- UTILS ---
+        const fmtMoney = (n) => `Rp ${new Intl.NumberFormat('id-ID').format(n)}`;
+        
+        // FUNGSI untuk Format Harga WA (menghilangkan 'Rp' agar perataan lebih mudah)
+        const formatPriceWA = (price) => {
+            const formatted = new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(price);
+            return formatted; // Contoh: "30.000"
+        };
 
-    const fmtMoney = (n) => `Rp ${new Intl.NumberFormat('id-ID').format(n)}`;
-    const formatPriceWA = (n) => new Intl.NumberFormat('id-ID').format(n);
 
-    // --- INIT ---
-    document.addEventListener('DOMContentLoaded', () => {
-        const params = new URLSearchParams(window.location.search);
-        const pId = params.get('id');
-        qty = parseInt(params.get('qty')) || 1;
+        // --- INIT & RENDER ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const pId = params.get('id');
+            qty = parseInt(params.get('qty')) || 1;
 
-        // CARI PRODUK LANGSUNG DARI fallbackDB
-        product = fallbackDB.find(p => p.id === pId);
+            const stored = JSON.parse(localStorage.getItem('products'));
+            const db = (stored && stored.length) ? stored : fallbackDB;
+            
+            product = db.find(p => String(p.id) === String(pId));
 
-        if (!product) {
-            alert("Produk tidak ditemukan!");
-            window.location.href = "produk.html";
-            return;
+            if (!product) {
+                alert('Produk tidak ditemukan!');
+                window.location.href = 'produk.html'; 
+                return;
+            }
+
+            renderUI();
+        });
+
+        function renderUI() {
+            document.getElementById('p_img').src = product.img;
+            document.getElementById('p_name').innerText = product.name;
+            document.getElementById('p_qty_display').innerText = `Jumlah: ${qty} ${product.unit.replace('/', '')}`;
+            document.getElementById('p_price').innerText = fmtMoney(product.price) + product.unit;
+            
+            calculate();
         }
 
-        renderUI();
-    });
+        function calculate() {
+            const subtotal = product.price * qty;
+            const total = subtotal + shippingCost;
 
-    function renderUI() {
-        document.getElementById('p_img').src = product.img;
-        document.getElementById('p_name').innerText = product.name;
-        document.getElementById('p_qty_display').innerText = `Jumlah: ${qty} ${product.unit.replace('/', '')}`;
-        document.getElementById('p_price').innerText = fmtMoney(product.price) + product.unit;
-
-        calculate();
-    }
-
-    function calculate() {
-        const subtotal = product.price * qty;
-        const total = subtotal + shippingCost;
-
-        document.getElementById('p_subtotal').innerText = fmtMoney(subtotal);
-        document.getElementById('p_shipping').innerText = 
-            shippingCost === 0 ? 'Dihitung' : fmtMoney(shippingCost);
-        document.getElementById('p_total').innerText = fmtMoney(total);
-    }
-
-    // --- EVENT: AREA ---
-    document.getElementById('area').addEventListener('change', function () {
-        const val = this.value;
-        const kabGroup = document.getElementById('kabupaten-group');
-
-        if (val === 'JEMBER') {
-            shippingCost = ONGKIR_JEMBER;
-            kabGroup.style.display = 'none';
-        } else if (val === 'LUAR_JEMBER') {
-            shippingCost = ONGKIR_LUAR;
-            kabGroup.style.display = 'block';
-        } else {
-            shippingCost = 0;
-            kabGroup.style.display = 'none';
+            document.getElementById('p_subtotal').innerText = fmtMoney(subtotal);
+            document.getElementById('p_shipping').innerText = shippingCost === 0 ? 'Dihitung' : fmtMoney(shippingCost);
+            document.getElementById('p_total').innerText = fmtMoney(total);
         }
 
-        calculate();
-    });
+        // --- EVENTS ---
+        // 1. Ganti Area
+        document.getElementById('area').addEventListener('change', function() {
+            const val = this.value;
+            const kabGroup = document.getElementById('kabupaten-group');
+            
+            if (val === 'JEMBER') {
+                shippingCost = ONGKIR_JEMBER;
+                kabGroup.style.display = 'none';
+                document.getElementById('kabupaten').required = false;
+            } else if (val === 'LUAR_JEMBER') {
+                shippingCost = ONGKIR_LUAR;
+                kabGroup.style.display = 'block';
+                document.getElementById('kabupaten').required = true;
+            } else {
+                shippingCost = 0;
+                kabGroup.style.display = 'none';
+                document.getElementById('kabupaten').required = false;
+            }
+            calculate();
+        });
 
-    // --- EVENT: SUBMIT FORM ---
-    document.getElementById('checkoutForm').addEventListener('submit', function (e) {
-        e.preventDefault();
+        // 2. Submit Form
+        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+            e.preventDefault();
 
-        if (shippingCost === 0) {
-            alert("Silakan pilih area pengiriman.");
-            return;
-        }
+            if (shippingCost === 0) {
+                alert("Silakan pilih area pengiriman.");
+                return;
+            }
 
-        const nama = document.getElementById('nama').value;
-        const wa = document.getElementById('whatsapp').value;
-        const area = document.getElementById('area').value;
-        const alamat = document.getElementById('alamat').value;
-        const kabupaten = document.getElementById('kabupaten').value || "-";
-        const metode = document.querySelector('input[name="payment"]:checked').value;
+            // Ambil Data
+            const nama = document.getElementById('nama').value;
+            const wa = document.getElementById('whatsapp').value;
+            const area = document.getElementById('area').value;
+            const alamat = document.getElementById('alamat').value;
+            const kab = document.getElementById('kabupaten').value;
+            const payment = document.querySelector('input[name="payment"]:checked').value;
+            
+            const orderId = '#INV-' + Math.floor(10000 + Math.random() * 90000);
+            const subtotalVal = product.price * qty;
+            const totalVal = subtotalVal + shippingCost;
+            const lokasi = area === 'LUAR_JEMBER' ? kab : 'Jember';
+            const fullAlamat = area === 'LUAR_JEMBER' ? `${alamat}, ${kab}` : `${alamat}, Jember`;
 
-        const subtotal = product.price * qty;
-        const total = subtotal + shippingCost;
+            // =========================================================
+            // ISI STRUK HTML DI MODAL (r_body)
+            // =========================================================
+            document.getElementById('r_id').innerText = orderId;
+            document.getElementById('r_date').innerText = new Date().toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            
+            const rBody = document.querySelector('.r-body');
+            rBody.innerHTML = `
+                <div class="r-row"><span>Penerima:</span> <span>${nama}</span></div>
+                <div class="r-row"><span>WhatsApp:</span> <span>${wa}</span></div>
+                <div style="margin-top: 5px;"><span>Alamat:</span></div>
+                <div style="font-size: 0.9rem; margin-bottom: 15px; padding-left: 10px; color: #555;">${fullAlamat}</div>
+                
+                <div style="margin: 10px 0; border-bottom: 1px dashed #ccc;"></div>
+                
+                <div class="r-row">
+                    <span id="r_prod_name">${product.name} x${qty} ${product.unit.replace('/', '')}</span>
+                    <span id="r_prod_price">${fmtMoney(subtotalVal)}</span>
+                </div>
+                <div class="r-row">
+                    <span>Ongkir (${lokasi})</span>
+                    <span id="r_shipping">${fmtMoney(shippingCost)}</span>
+                </div>
+                
+                <div class="r-row r-total">
+                    <span>TOTAL</span>
+                    <span id="r_grand_total">${fmtMoney(totalVal)}</span>
+                </div>
+                <div class="r-row" style="margin-top: 5px; font-size: 0.85rem; color: #666;">
+                    <span>Metode:</span> <span>${payment}</span>
+                </div>
+            `;
+            // =========================================================
 
-        // TAMPILKAN MODAL STRUK
-        document.getElementById('r_id').innerText = "#INV-" + Date.now();
-        document.getElementById('r_date').innerText = new Date().toLocaleString('id-ID');
 
-        document.getElementById('r_nama').innerText = nama;
-        document.getElementById('r_area').innerText = 
-            area === "LUAR_JEMBER" ? kabupaten : "Jember";
+// --- TEMPLATE PESAN WA PALING RAPI DAN STABIL ---
 
-        document.getElementById('r_prod_name').innerText = `${product.name} x${qty}`;
-        document.getElementById('r_prod_price').innerText = fmtMoney(subtotal);
-        document.getElementById('r_shipping').innerText = fmtMoney(shippingCost);
-        document.getElementById('r_grand_total').innerText = fmtMoney(total);
-        document.getElementById('r_method').innerText = metode;
+let waText = `
+*KONFIRMASI PESANAN BARU*
+Dari: ${nama}
+================================================
 
-        // LINK WHATSAPP
-        const waText = 
-            `*KONFIRMASI PESANAN BARU*\n\n` +
-            `Nama: ${nama}\n` +
-            `WA: ${wa}\n` +
-            `Area: ${area === 'JEMBER' ? 'Jember' : kabupaten}\n` +
-            `Alamat: ${alamat}\n\n` +
-            `*Produk*: ${product.name}\n` +
-            `Jumlah: ${qty} ${product.unit.replace("/", "")}\n` +
-            `Harga: Rp ${formatPriceWA(product.price)}\n` +
-            `Subtotal: Rp ${formatPriceWA(subtotal)}\n` +
-            `Ongkir: Rp ${formatPriceWA(shippingCost)}\n\n` +
-            `*Total Bayar: Rp ${formatPriceWA(total)}*\n\n` +
-            `Metode: ${metode}`;
+*1. RINCIAN PESANAN*
+ID Order: *${orderId}*
+Item: ${product.name} (x${qty} ${product.unit.replace('/', '')})
+Subtotal: ${fmtMoney(subtotalVal)}
+Ongkir (${lokasi}): ${fmtMoney(shippingCost)}
+------------------------------------------------
+*TOTAL BAYAR: ${fmtMoney(totalVal)}*
+Metode: ${payment}
+================================================
 
-        document.getElementById('waBtn').href =
-            `https://wa.me/${ADMIN_WA_NUMBER}?text=${encodeURIComponent(waText)}`;
+*2. DATA PENGIRIMAN*
+Penerima: ${nama}
+No. WA: ${wa}
+Alamat Lengkap: ${fullAlamat}
 
-        document.getElementById('receiptModal').style.display = "flex";
-        setTimeout(() => {
-            document.getElementById('receiptModal').classList.add('active');
-        }, 10);
-    });
-</script>
+_Mohon segera diproses. Terima kasih!_
+`;
+
+// Encode teks dengan aman
+const encodedWaText = encodeURIComponent(waText.trim());
+
+// Set link WA
+document.getElementById('waBtn').href =
+  `https://wa.me/${ADMIN_WA_NUMBER}?text=${encodedWaText}`;
+
+// (Lanjutkan menampilkan modal...)
+
+            // Tampilkan Modal
+            const modal = document.getElementById('receiptModal');
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('active'), 10);
+        });
+    </script>
+
+</body>
+</html>
