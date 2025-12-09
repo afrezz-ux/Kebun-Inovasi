@@ -333,162 +333,141 @@
     </div>
 
 <script>
-        // --- CONFIG ---
-        const ONGKIR_JEMBER = 10000;
-        const ONGKIR_LUAR = 30000;
-        // Ganti dengan nomor WA Admin yang benar, format internasional (tanpa +)
-        const ADMIN_WA_NUMBER = '6281515524727'; 
-        
-        // Database Produk (Fallback jika localStorage kosong/tidak ada)
-        const fallbackDB = [
-    { id: 'p1', name: "Jeruk Siam", category: "Buah", price: 12000, unit: "/kg", stock: 50, img: "images/jeruk1.jpg", desc: "Jeruk Siam segar dengan rasa manis asam yang pas, kaya vitamin C." },
-    { id: 'p2', name: "Mangga Harum Manis", category: "Buah", price: 30000, unit: "/kg", stock: 30, img: "images/mangga.jpg", desc: "Mangga kualitas super, daging tebal, biji tipis, dan serat halus." },
-    { id: 'p3', name: "Nanas Madu", category: "Buah", price: 18000, unit: "/buah", stock: 40, img: "images/nanas.jpg", desc: "Nanas madu lokal anti gatal di lidah, sangat manis." },
-    { id: 'p4', name: "Jeruk Pamelo", category: "Buah", price: 15000, unit: "/kg", stock: 25, img: "images/jerukpamelo.jpg", desc: "Jeruk Pamelo lokal segar dengan kandungan air melimpah." },
-    { id: 'p5', name: "Semangka", category: "Buah", price: 25000, unit: "/kg", stock: 15, img: "images/semangka.png", desc: "Semangka merah segar dengan rasa manis alami yang menyegarkan." },
+    // --- CONFIG ---
+    const ONGKIR_JEMBER = 10000;
+    const ONGKIR_LUAR = 30000;
+    const ADMIN_WA_NUMBER = '6281515524727'; 
     
-    { id: 't1', name: "Tabulampot Jambu", category: "Tabulampot", price: 250000, unit: "/pot", stock: 5, img: "images/tabulampotjeruk.jpg", desc: "Bibit Jambu Air Citra dalam pot siap berbuah." },
-    { id: 't2', name: "Tabulampot Jeruk", category: "Tabulampot", price: 275000, unit: "/pot", stock: 3, img: "images/tabulampotmangga.jpg", desc: "Jeruk Dekopon Jepang unik dengan tonjolan." },
-    { id: 't3', name: "Tabulampot Nanas", category: "Tabulampot", price: 300000, unit: "/pot", stock: 4, img: "images/tabulampotnanas.png", desc: "Kelengkeng Itoh super genjah, daging tebal." }
-];
+    // --- DATABASE PRODUK ASLI (langsung dipakai, tanpa localStorage) ---
+    const productDB = [
+        { id: 'p1', name: "Jeruk Siam", category: "Buah", price: 12000, unit: "/kg", stock: 50, img: "images/jeruk1.jpg", desc: "Jeruk Siam segar dengan rasa manis asam yang pas, kaya vitamin C." },
+        { id: 'p2', name: "Mangga Harum Manis", category: "Buah", price: 30000, unit: "/kg", stock: 30, img: "images/mangga.jpg", desc: "Mangga kualitas super, daging tebal, biji tipis, dan serat halus." },
+        { id: 'p3', name: "Nanas Madu", category: "Buah", price: 18000, unit: "/buah", stock: 40, img: "images/nanas.jpg", desc: "Nanas madu lokal anti gatal di lidah, sangat manis." },
+        { id: 'p4', name: "Jeruk Pamelo", category: "Buah", price: 15000, unit: "/kg", stock: 25, img: "images/jerukpamelo.jpg", desc: "Jeruk Pamelo lokal segar dengan kandungan air melimpah." },
+        { id: 'p5', name: "Semangka", category: "Buah", price: 25000, unit: "/kg", stock: 15, img: "images/semangka.png", desc: "Semangka merah segar dengan rasa manis alami yang menyegarkan." },
 
+        { id: 't1', name: "Tabulampot Jambu", category: "Tabulampot", price: 250000, unit: "/pot", stock: 5, img: "images/tabulampotjeruk.jpg", desc: "Bibit Jambu Air Citra dalam pot siap berbuah." },
+        { id: 't2', name: "Tabulampot Jeruk", category: "Tabulampot", price: 275000, unit: "/pot", stock: 3, img: "images/tabulampotmangga.jpg", desc: "Jeruk Dekopon Jepang unik dengan tonjolan." },
+        { id: 't3', name: "Tabulampot Nanas", category: "Tabulampot", price: 300000, unit: "/pot", stock: 4, img: "images/tabulampotnanas.png", desc: "Kelengkeng Itoh super genjah, daging tebal." }
+    ];
 
- // --- STATE ---
-        let product = null;
-        let qty = 1;
-        let shippingCost = 0;
+    // --- STATE ---
+    let product = null;
+    let qty = 1;
+    let shippingCost = 0;
 
-        // --- UTILS ---
-        const fmtMoney = (n) => `Rp ${new Intl.NumberFormat('id-ID').format(n)}`;
-        
-        // FUNGSI untuk Format Harga WA (menghilangkan 'Rp' agar perataan lebih mudah)
-        const formatPriceWA = (price) => {
-            const formatted = new Intl.NumberFormat('id-ID', { minimumFractionDigits: 0 }).format(price);
-            return formatted; // Contoh: "30.000"
-        };
+    // --- UTILS ---
+    const fmtMoney = (n) => `Rp ${new Intl.NumberFormat('id-ID').format(n)}`;
+    const formatPriceWA = (price) => new Intl.NumberFormat('id-ID').format(price);
 
+    // --- INIT ---
+    document.addEventListener('DOMContentLoaded', () => {
+        const params = new URLSearchParams(window.location.search);
+        const pId = params.get('id');
+        qty = parseInt(params.get('qty')) || 1;
 
-        // --- INIT & RENDER ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const params = new URLSearchParams(window.location.search);
-            const pId = params.get('id');
-            qty = parseInt(params.get('qty')) || 1;
+        // Ambil data langsung dari productDB
+        product = productDB.find(p => String(p.id) === String(pId));
 
-            const stored = JSON.parse(localStorage.getItem('products'));
-            const db = (stored && stored.length) ? stored : fallbackDB;
-            
-            product = db.find(p => String(p.id) === String(pId));
-
-            if (!product) {
-                alert('Produk tidak ditemukan!');
-                window.location.href = 'produk.html'; 
-                return;
-            }
-
-            renderUI();
-        });
-
-        function renderUI() {
-            document.getElementById('p_img').src = product.img;
-            document.getElementById('p_name').innerText = product.name;
-            document.getElementById('p_qty_display').innerText = `Jumlah: ${qty} ${product.unit.replace('/', '')}`;
-            document.getElementById('p_price').innerText = fmtMoney(product.price) + product.unit;
-            
-            calculate();
+        if (!product) {
+            alert('Produk tidak ditemukan!');
+            window.location.href = 'produk.html';
+            return;
         }
 
-        function calculate() {
-            const subtotal = product.price * qty;
-            const total = subtotal + shippingCost;
+        renderUI();
+    });
 
-            document.getElementById('p_subtotal').innerText = fmtMoney(subtotal);
-            document.getElementById('p_shipping').innerText = shippingCost === 0 ? 'Dihitung' : fmtMoney(shippingCost);
-            document.getElementById('p_total').innerText = fmtMoney(total);
+    function renderUI() {
+        document.getElementById('p_img').src = product.img;
+        document.getElementById('p_name').innerText = product.name;
+        document.getElementById('p_qty_display').innerText = `Jumlah: ${qty} ${product.unit.replace('/', '')}`;
+        document.getElementById('p_price').innerText = fmtMoney(product.price) + product.unit;
+        calculate();
+    }
+
+    function calculate() {
+        const subtotal = product.price * qty;
+        const total = subtotal + shippingCost;
+
+        document.getElementById('p_subtotal').innerText = fmtMoney(subtotal);
+        document.getElementById('p_shipping').innerText = shippingCost === 0 ? 'Dihitung' : fmtMoney(shippingCost);
+        document.getElementById('p_total').innerText = fmtMoney(total);
+    }
+
+    // --- EVENTS ---
+    document.getElementById('area').addEventListener('change', function() {
+        const val = this.value;
+        const kabGroup = document.getElementById('kabupaten-group');
+
+        if (val === 'JEMBER') {
+            shippingCost = ONGKIR_JEMBER;
+            kabGroup.style.display = 'none';
+            document.getElementById('kabupaten').required = false;
+        } else if (val === 'LUAR_JEMBER') {
+            shippingCost = ONGKIR_LUAR;
+            kabGroup.style.display = 'block';
+            document.getElementById('kabupaten').required = true;
+        } else {
+            shippingCost = 0;
+            kabGroup.style.display = 'none';
+            document.getElementById('kabupaten').required = false;
+        }
+        calculate();
+    });
+
+    // --- CHECKOUT ---
+    document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        if (shippingCost === 0) {
+            alert("Silakan pilih area pengiriman.");
+            return;
         }
 
-        // --- EVENTS ---
-        // 1. Ganti Area
-        document.getElementById('area').addEventListener('change', function() {
-            const val = this.value;
-            const kabGroup = document.getElementById('kabupaten-group');
+        const nama = document.getElementById('nama').value;
+        const wa = document.getElementById('whatsapp').value;
+        const area = document.getElementById('area').value;
+        const alamat = document.getElementById('alamat').value;
+        const kab = document.getElementById('kabupaten').value;
+        const payment = document.querySelector('input[name="payment"]:checked').value;
+
+        const orderId = '#INV-' + Math.floor(10000 + Math.random() * 90000);
+        const subtotalVal = product.price * qty;
+        const totalVal = subtotalVal + shippingCost;
+        const lokasi = area === 'LUAR_JEMBER' ? kab : 'Jember';
+        const fullAlamat = area === 'LUAR_JEMBER' ? `${alamat}, ${kab}` : `${alamat}, Jember`;
+
+        // ISI STRUK
+        document.getElementById('r_id').innerText = orderId;
+        document.getElementById('r_date').innerText = new Date().toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
+
+        const rBody = document.querySelector('.r-body');
+        rBody.innerHTML = `
+            <div class="r-row"><span>Penerima:</span> <span>${nama}</span></div>
+            <div class="r-row"><span>WhatsApp:</span> <span>${wa}</span></div>
+            <div style="margin-top: 5px;"><span>Alamat:</span></div>
+            <div style="font-size: 0.9rem; margin-bottom: 15px; padding-left: 10px; color: #555;">${fullAlamat}</div>
             
-            if (val === 'JEMBER') {
-                shippingCost = ONGKIR_JEMBER;
-                kabGroup.style.display = 'none';
-                document.getElementById('kabupaten').required = false;
-            } else if (val === 'LUAR_JEMBER') {
-                shippingCost = ONGKIR_LUAR;
-                kabGroup.style.display = 'block';
-                document.getElementById('kabupaten').required = true;
-            } else {
-                shippingCost = 0;
-                kabGroup.style.display = 'none';
-                document.getElementById('kabupaten').required = false;
-            }
-            calculate();
-        });
+            <div class="r-row">
+                <span>${product.name} x${qty} ${product.unit.replace('/', '')}</span>
+                <span>${fmtMoney(subtotalVal)}</span>
+            </div>
+            <div class="r-row">
+                <span>Ongkir (${lokasi})</span>
+                <span>${fmtMoney(shippingCost)}</span>
+            </div>
+            <div class="r-row r-total">
+                <span>TOTAL</span>
+                <span>${fmtMoney(totalVal)}</span>
+            </div>
+            <div class="r-row" style="font-size: 0.85rem; color: #666;">
+                <span>Metode:</span> <span>${payment}</span>
+            </div>
+        `;
 
-        // 2. Submit Form
-        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            if (shippingCost === 0) {
-                alert("Silakan pilih area pengiriman.");
-                return;
-            }
-
-            // Ambil Data
-            const nama = document.getElementById('nama').value;
-            const wa = document.getElementById('whatsapp').value;
-            const area = document.getElementById('area').value;
-            const alamat = document.getElementById('alamat').value;
-            const kab = document.getElementById('kabupaten').value;
-            const payment = document.querySelector('input[name="payment"]:checked').value;
-            
-            const orderId = '#INV-' + Math.floor(10000 + Math.random() * 90000);
-            const subtotalVal = product.price * qty;
-            const totalVal = subtotalVal + shippingCost;
-            const lokasi = area === 'LUAR_JEMBER' ? kab : 'Jember';
-            const fullAlamat = area === 'LUAR_JEMBER' ? `${alamat}, ${kab}` : `${alamat}, Jember`;
-
-            // =========================================================
-            // ISI STRUK HTML DI MODAL (r_body)
-            // =========================================================
-            document.getElementById('r_id').innerText = orderId;
-            document.getElementById('r_date').innerText = new Date().toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
-            
-            const rBody = document.querySelector('.r-body');
-            rBody.innerHTML = `
-                <div class="r-row"><span>Penerima:</span> <span>${nama}</span></div>
-                <div class="r-row"><span>WhatsApp:</span> <span>${wa}</span></div>
-                <div style="margin-top: 5px;"><span>Alamat:</span></div>
-                <div style="font-size: 0.9rem; margin-bottom: 15px; padding-left: 10px; color: #555;">${fullAlamat}</div>
-                
-                <div style="margin: 10px 0; border-bottom: 1px dashed #ccc;"></div>
-                
-                <div class="r-row">
-                    <span id="r_prod_name">${product.name} x${qty} ${product.unit.replace('/', '')}</span>
-                    <span id="r_prod_price">${fmtMoney(subtotalVal)}</span>
-                </div>
-                <div class="r-row">
-                    <span>Ongkir (${lokasi})</span>
-                    <span id="r_shipping">${fmtMoney(shippingCost)}</span>
-                </div>
-                
-                <div class="r-row r-total">
-                    <span>TOTAL</span>
-                    <span id="r_grand_total">${fmtMoney(totalVal)}</span>
-                </div>
-                <div class="r-row" style="margin-top: 5px; font-size: 0.85rem; color: #666;">
-                    <span>Metode:</span> <span>${payment}</span>
-                </div>
-            `;
-            // =========================================================
-
-
-// --- TEMPLATE PESAN WA PALING RAPI DAN STABIL ---
-
-let waText = `
+        // --- WHATSAPP TEXT ---
+        let waText = `
 *KONFIRMASI PESANAN BARU*
 Dari: ${nama}
 ================================================
@@ -510,22 +489,17 @@ Alamat Lengkap: ${fullAlamat}
 
 _Mohon segera diproses. Terima kasih!_
 `;
+        const encoded = encodeURIComponent(waText.trim());
+        document.getElementById('waBtn').href = `https://wa.me/${ADMIN_WA_NUMBER}?text=${encoded}`;
 
-// Encode teks dengan aman
-const encodedWaText = encodeURIComponent(waText.trim());
+        // Tampilkan modal
+        const modal = document.getElementById('receiptModal');
+        modal.style.display = 'flex';
+        setTimeout(() => modal.classList.add('active'), 10);
+    });
+</script>
 
-// Set link WA
-document.getElementById('waBtn').href =
-  `https://wa.me/${ADMIN_WA_NUMBER}?text=${encodedWaText}`;
-
-// (Lanjutkan menampilkan modal...)
-
-            // Tampilkan Modal
-            const modal = document.getElementById('receiptModal');
-            modal.style.display = 'flex';
-            setTimeout(() => modal.classList.add('active'), 10);
-        });
-    </script>
 
 </body>
 </html>
+
